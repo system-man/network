@@ -29,7 +29,7 @@ class HTTPServer(object):
             http_process.start()
             client.close()                        #开启进程时复制了一份客户端套接字，所以这边要关闭
 
-    def start_response(self,status,headers):
+    def start_response(self,status,headers):      #构造响应头
         '''
         status
         headers=[
@@ -41,8 +41,8 @@ class HTTPServer(object):
              response_headers += "%s: %s\r\n" % header
         self.response_headers = response_headers
 
-    def client_handler(self,client):
-        request_data = client.recv(1024)
+    def client_handler(self,client):                #具体的处理函数
+        request_data = client.recv(1024)            #获取请求信息，分析提取请求头
         request_lines = request_data.splitlines()
         method_filename = re.search(r'\w+ +(/[^ ]*) ', request_lines[0].decode("utf-8")).group(0).split(' ')
         #print(method_filename)
@@ -53,7 +53,7 @@ class HTTPServer(object):
 
         #if filename.endswith('.py'):
         #   m = __import__(filename[1:-3])
-        env={
+        env={                                         #将请求信息存储为字典，传入应用，获取响应头+响应主体，将响应回传客户端
                 "PATH_INFO":filename,
                 "METHOD": method
         }
