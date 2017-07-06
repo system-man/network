@@ -5,7 +5,7 @@ import time
 root='.'
 
 class Application(object):
-    ''''''
+    '''构造应用'''
     def __init__(self,urls):
         self.urls=urls
 
@@ -30,7 +30,7 @@ class Application(object):
                 start_response(status,headers)
                 return file.decode("utf-8")
 
-        for url,handler in self.urls:
+        for url,handler in self.urls:    #非get 静态文件时，根据url判断处理函数，进而构造响应头+主体
             if path == url:
                return handler(env,start_response)
 
@@ -58,4 +58,4 @@ urls=[
 ]
 
 
-app = Application(urls)
+app = Application(urls)    #这是一个单例模式
